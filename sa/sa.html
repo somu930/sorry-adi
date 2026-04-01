@@ -1,0 +1,235 @@
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>💜 Sorry Aditi 💜</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Comic+Neue:wght@700&display=swap');
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Comic Neue', cursive;
+    background: linear-gradient(135deg, #E6E6FA, #FFD1DC);
+    overflow: hidden;
+    text-align: center;
+    color: #4B0082;
+    height: 100vh;
+}
+
+h1 {
+    margin-top: 50px;
+    font-size: 3em;
+    text-shadow: 2px 2px #FFB6C1;
+    animation: glow 1.5s infinite alternate;
+}
+
+@keyframes glow {
+    from {text-shadow: 2px 2px #FFB6C1, 0 0 10px #FFB6C1;}
+    to {text-shadow: 2px 2px #FF69B4, 0 0 20px #FF69B4;}
+}
+
+#message {
+    font-size: 1.3em;
+    max-width: 600px;
+    margin: 20px auto;
+    line-height: 1.5em;
+    min-height: 250px;
+}
+
+.buttons {
+    margin-top: 40px;
+    position: relative;
+    height: 150px;
+    display: none;
+}
+
+button {
+    font-size: 1.5em;
+    padding: 15px 30px;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 0 10px rgba(255,182,193,0.7);
+}
+
+#yesBtn {
+    background: linear-gradient(45deg, #FFB6C1, #FF69B4);
+    color: white;
+}
+
+#noBtn {
+    background: linear-gradient(45deg, #FFA07A, #FF4500);
+    color: white;
+    position: absolute;
+}
+
+.emoji, .heart {
+    position: absolute;
+    pointer-events: none;
+    user-select: none;
+}
+
+.heart {
+    animation: floatUp 5s linear infinite;
+    font-size: 20px;
+}
+
+@keyframes floatUp {
+    0% {transform: translateY(0) rotate(0deg); opacity:1;}
+    100% {transform: translateY(-800px) rotate(360deg); opacity:0;}
+}
+
+#popup {
+    position: fixed;
+    top:0; left:0;
+    width:100%; height:100%;
+    background: rgba(255, 182, 193, 0.9);
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    flex-direction:column;
+    z-index:9999;
+}
+
+#popup h2 {
+    font-size:3em;
+    color:white;
+    text-shadow:2px 2px #FF69B4;
+    margin-bottom:20px;
+}
+</style>
+</head>
+
+<body onclick="startMusic()">
+
+<div id="popup">
+    <h2>💖 SORRY 💖</h2>
+    <p style="color:white; font-size:1.5em;">Please forgive me 😢😘💐✨</p>
+</div>
+
+<h1>💜 I'm Sorry, Aditi 💜</h1>
+<div id="message"></div>
+
+<div class="buttons" id="buttonContainer">
+    <button id="yesBtn">Yes 💖</button>
+    <button id="noBtn">No 😢</button>
+</div>
+
+<audio id="song" loop>
+  <source src="ehsaas.mp3" type="audio/mpeg">
+</audio>
+
+<script>
+// ---------- MUSIC ----------
+function startMusic() {
+    const song = document.getElementById("song");
+    song.play();
+}
+
+// ---------- TEXT ----------
+const lines = [
+    "Tu hai ek tofaa khuda ka 💖",
+    "Hey Aditi, I want to sincerely apologize for anything I’ve done that has hurt or upset you.",
+    "I don’t want to cause you pain or trigger any past hurts—I’m not here to make things harder for you.",
+    "Please know that I’m not going anywhere, and I truly want to be better for you.",
+    "Tell me how I can change—I’m ready to work on myself completely because losing you isn’t something I can imagine 💖",
+    "Do you forgive me? 😢💖"
+];
+
+const messageDiv = document.getElementById("message");
+const buttonContainer = document.getElementById("buttonContainer");
+let currentLine = 0;
+
+// ---------- TEXT ANIMATION ----------
+function showLineSlow(line, index=0){
+    if(index < line.length){
+        messageDiv.innerHTML += line[index];
+        index++;
+        setTimeout(()=>showLineSlow(line,index), 45);
+    } else {
+        messageDiv.innerHTML += "<br><br>";
+        currentLine++;
+        if(currentLine < lines.length){
+            setTimeout(()=>showLineSlow(lines[currentLine]), 800);
+        } else {
+            // SHOW BUTTONS AFTER LAST LINE
+            buttonContainer.style.display = "block";
+        }
+    }
+}
+
+// ---------- HEARTS ----------
+function createHeart() {
+    const heart = document.createElement('div');
+    heart.classList.add('heart');
+    heart.style.left = Math.random()*window.innerWidth+'px';
+    heart.style.fontSize=(Math.random()*30+20)+'px';
+    heart.style.animationDuration=(Math.random()*3+3)+'s';
+    heart.innerText='💖';
+    document.body.appendChild(heart);
+    setTimeout(()=>heart.remove(),5000);
+}
+setInterval(createHeart,300);
+
+// ---------- EMOJI RAIN ----------
+function emojiRain(){
+    const emojis = ['😢','💖','😘','💐','✨','🌸','🥰'];
+    const emoji = document.createElement('div');
+    emoji.classList.add('emoji');
+    emoji.style.left = Math.random()*window.innerWidth+'px';
+    emoji.style.top = '-50px';
+    emoji.style.fontSize=(Math.random()*40+20)+'px';
+    emoji.innerText = emojis[Math.floor(Math.random()*emojis.length)];
+    document.body.appendChild(emoji);
+    let top= -50;
+    const fall = setInterval(()=>{
+        top+=5+Math.random()*5;
+        emoji.style.top = top+'px';
+        if(top>window.innerHeight){
+            emoji.remove();
+            clearInterval(fall);
+        }
+    },30);
+}
+let emojiInterval;
+
+// ---------- BUTTONS ----------
+const noBtn = document.getElementById("noBtn");
+noBtn.addEventListener("mouseenter", () => {
+    const x = Math.random()*(window.innerWidth-noBtn.offsetWidth);
+    const y = Math.random()*(window.innerHeight-noBtn.offsetHeight-150);
+    noBtn.style.left = x+'px';
+    noBtn.style.top = y+'px';
+});
+
+const yesBtn = document.getElementById("yesBtn");
+yesBtn.addEventListener("click", () => {
+    alert("Thank you ❤️ I love you Aditi! 💖🌸✨");
+    for(let i=0;i<100;i++){
+        const confetti = document.createElement('div');
+        confetti.classList.add('heart');
+        confetti.style.left = Math.random()*window.innerWidth+'px';
+        confetti.style.top = Math.random()*window.innerHeight+'px';
+        confetti.style.fontSize=(Math.random()*20+10)+'px';
+        confetti.innerText='💖';
+        document.body.appendChild(confetti);
+        setTimeout(()=>confetti.remove(),3000);
+    }
+});
+
+// ---------- POPUP ----------
+window.addEventListener("load",()=>{
+    const popup = document.getElementById("popup");
+    emojiInterval = setInterval(emojiRain, 200);
+
+    setTimeout(()=>{
+        popup.style.display="none";
+        clearInterval(emojiInterval);
+        showLineSlow(lines[currentLine]);
+    },5000);
+});
+</script>
+</body>
+</html>
